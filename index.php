@@ -82,6 +82,11 @@ function config()
         return $config = require "config.php";
     }
 
+    if (APP_ENV === "prod") {
+        echo "<p>Configuration could not be loaded. <code>Check the config.php</code> file.</p?";
+        exit;
+    }
+
     $error = null;
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         try {
