@@ -7,8 +7,11 @@ $tpl->body = function () use ($e) {
     <div class="container">
         <h1>500 - Internal Server Error</h1>
 
-        <p><?= e($e->getMessage()) ?></p>
-        <code><?= e($e->getTraceAsString()) ?></code>
+        <p>
+            <code><?= e($e->getMessage()) ?></code>
+        </p>
+        
+        <pre><?= e($e->getTraceAsString()) ?></pre>
     </div>
     <?php
 };

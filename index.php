@@ -30,7 +30,8 @@ spl_autoload_register(function ($class) {
             return;
         case "DB":
             require "lib/db.php";
-            DB::register('stevo', 'stevo', 'stevo');
+            $config = config();
+            DB::register($config["database_name"], $config["database_user"], $config["database_password"]);
             return;
         case "FlashMessage":
             ensure_session_started();
@@ -41,11 +42,6 @@ spl_autoload_register(function ($class) {
             return;
     }
 });
-
-// Check if we have the database ready.
-if (APP_ENV === "dev") {
-    check_config();
-}
 
 function get_page()
 {
@@ -74,11 +70,18 @@ function get_page()
     }
 }
 
-function check_config()
+function config()
 {
-    if (file_exists("config.php")) {
-        return;
+    static $config;
+
+    if ($config !== null) {
+        return $config;
     }
+
+    if (file_exists("config.php")) {
+        return $config = require "config.php";
+    }
+
     $error = null;
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         try {
@@ -121,9 +124,9 @@ function check_config()
     exit;
 }
 
-function main()
+function run()
 {
-    require "lib/functions.php";
+    require_once "lib/functions.php";
 
     $page = get_page();
 
@@ -136,4 +139,8 @@ function main()
     }
 }
 
-main();
+// Load configuration so we are certain that it exists.
+config();
+
+// Run the application.
+run();
