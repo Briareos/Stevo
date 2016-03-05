@@ -1,13 +1,13 @@
 <?php
 
-$page = "company-new";
+$action = "?p=company-new";
 $companyName = "";
 if (isset($company)) {
-    $page = "company-edit";
+    $action = "?p=company-edit&id={$company->id}";
     $companyName = $company->name;
 }
 ?>
-<form action="?p=<?= $page ?>" method="POST">
+<form action="<?= $action ?>" method="POST">
     <div class="form-group">
         <label for="name">Name</label>
         <input type="text" class="form-control" id="name" name="name" placeholder="Company Name"

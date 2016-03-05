@@ -58,7 +58,10 @@ class DB
             $stmt = $this->conn->prepare("INSERT INTO company (name) VALUES (:name)");
         }
         $stmt->execute($params);
-        $company->id = (int)$this->conn->lastInsertId();
+        if (!$company->id) {
+            // This was an insert.
+            $company->id = (int)$this->conn->lastInsertId();
+        }
     }
 
     /**
